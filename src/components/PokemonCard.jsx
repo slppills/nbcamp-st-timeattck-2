@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { DexContext } from "../context/DexContext";
 
 const Wrapper = styled.div`
   padding: 10px;
@@ -10,7 +11,8 @@ const SelectButton = styled.button`
   background-color: red;
 `;
 
-const PokemonCard = ({ pokemon, setMyPokemon, isSelected }) => {
+const PokemonCard = ({ pokemon, isSelected }) => {
+  const { myPokemon, setMyPokemon } = useContext(DexContext);
   const navigate = useNavigate();
   const buttonRef = useRef();
 
@@ -24,7 +26,18 @@ const PokemonCard = ({ pokemon, setMyPokemon, isSelected }) => {
           삭제
         </SelectButton>
       ) : (
-        <SelectButton ref={buttonRef} onClick={() => setMyPokemon((prev) => [...prev, pokemon.id - 1])}>
+        <SelectButton
+          ref={buttonRef}
+          onClick={() => {
+            if (myPokemon.length >= 6) {
+              alert("6마리 꽉 찼습니다");
+            } else if (myPokemon.includes(pokemon.id - 1)) {
+              alert("이미 그 포켓몬이 있습니다");
+            } else {
+              setMyPokemon((prev) => [...prev, pokemon.id - 1]);
+            }
+          }}
+        >
           추가
         </SelectButton>
       )}

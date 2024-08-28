@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import PokemonCard from "./PokemonCard";
+import { useContext } from "react";
+import { DexContext } from "../context/DexContext";
 
 const MyPokemonContainer = styled.div`
   padding: 20px;
@@ -22,7 +24,8 @@ const MyPokemonBox = styled.div`
   background-color: blue;
 `;
 
-const Dashboard = ({ myPokemon, setMyPokemon, pokemonList }) => {
+const Dashboard = () => {
+  const { myPokemon, pokemonList } = useContext(DexContext);
   return (
     <MyPokemonContainer>
       <MyPokemonTitle>나만의 포켓몬</MyPokemonTitle>
@@ -31,12 +34,7 @@ const Dashboard = ({ myPokemon, setMyPokemon, pokemonList }) => {
           .fill(null)
           .map((_, index) => {
             return myPokemon[index] ? (
-              <PokemonCard
-                isSelected={true}
-                key={index + 999}
-                pokemon={pokemonList[myPokemon[index]]}
-                setMyPokemon={setMyPokemon}
-              />
+              <PokemonCard isSelected={true} key={index + 999} pokemon={pokemonList[myPokemon[index]]} />
             ) : (
               <MyPokemonBox key={index} />
             );
